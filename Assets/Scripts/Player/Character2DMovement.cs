@@ -212,6 +212,18 @@ public class Character2DMovement : MonoBehaviour
 	     *   * Persistent heading flag: *mHeadingRight*
 	     *   * Rotating a local rotation by an axis: localRotation *= Quaternion.Euler(...)
 	     */
+	    if (mInput.move.x < 0 && mHeadingRight)
+	    {
+		    mHeadingRight = false;
+		    var scale = mController.transform.localScale;
+		    mController.transform.localScale = new Vector3(-scale.x, scale.y, scale.z);
+	    }
+	    if (mInput.move.x > 0 && !mHeadingRight)
+	    {
+		    mHeadingRight = true;
+		    var scale = mController.transform.localScale;
+		    mController.transform.localScale = new Vector3(-scale.x, scale.y, scale.z);
+	    }
 		
 	    var animator = mSelector.charAnimator;
 	    if (animator != null)
@@ -265,6 +277,12 @@ public class Character2DMovement : MonoBehaviour
 			 *   * Current Animator instance: *animator*
 			 *   * Animator methods: *SetFloat* and *SetBool*
 			 */
+			animator.SetFloat("MoveSpeed", moveSpeed);
+			animator.SetFloat("Speed", speed);
+			animator.SetBool("Crouch", crouch);
+			animator.SetBool("Grounded", grounded);
+			animator.SetBool("Fall", falling);
+			animator.SetBool("Jump", jump);
 	    }
     }
 }
